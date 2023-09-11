@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Models list
+
+model Usuarios {
+  id                    Int                     @id @default(autoincrement())
+  usuario               String                  @unique @db.VarChar(30)
+  apellido              String                  @db.VarChar(50)
+  nombre                String                  @db.VarChar(50)
+  dni                   String                  @db.VarChar(30)
+  password              String
+  email                 String                  @db.VarChar(50)
+  role                  String?                 @default("ADMIN_ROLE")
+  activo                Boolean?                @default(true)
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  permisos              UsuariosPermisos[]
+  unidadesMedida        UnidadesMedida[]
+  productos             Productos[]
+  imagenes              Imagenes[]
+  publicidades          Publicidades[]
+  publicidadesProductos PublicidadesProductos[]
+}
+
+model UsuariosPermisos {
+  id        Int       @id @default(autoincrement())
+  alcance   String    @db.VarChar(50)
+  permiso   String    @db.VarChar(50)
+  usuarioId Int
+  usuario   Usuarios  @relation(fields: [usuarioId], references: [id])
+  activo    Boolean?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model UnidadesMedida {
+  id            Int         @id @default(autoincrement())
+  descripcion   String      @unique @db.VarChar(50)
+  activo        Boolean?    @default(true)
+  productos     Productos[]
+  creatorUserId Int
+  creatorUser   Usuarios    @relation(fields: [creatorUserId], references: [id])
+  createdAt     DateTime?   @default(now())
+  updatedAt     DateTime?   @updatedAt
+}
+
+model Productos {
+  id                    Int                     @id @default(autoincrement())
+  descripcion           String                  @unique @db.VarChar(100)
+  precio                Float
+  activo                Boolean?                @default(true)
+  unidadMedidaId        Int
+  unidadMedida          UnidadesMedida          @relation(fields: [unidadMedidaId], references: [id])
+  creatorUserId         Int
+  creatorUser           Usuarios                @relation(fields: [creatorUserId], references: [id])
+  createdAt             DateTime?               @default(now())
+  updatedAt             DateTime?               @updatedAt
+  publicidadesProductos PublicidadesProductos[]
+}
+
+model Imagenes {
+  id                    Int                     @id @default(autoincrement())
+  descripcion           String                  @unique @db.VarChar(100)
+  url                   String                  @db.VarChar(100)
+  activo                Boolean?                @default(true)
+  creatorUserId         Int
+  creatorUser           Usuarios                @relation(fields: [creatorUserId], references: [id])
+  createdAt             DateTime?               @default(now())
+  updatedAt             DateTime?               @updatedAt
+  publicidadesProductos PublicidadesProductos[]
+}
+
+model Publicidades {
+  id                    Int                     @id @default(autoincrement())
+  descripcion           String                  @unique @db.VarChar(100)
+  tema                  String?                 @default("Basico") @db.VarChar(100)
+  activo                Boolean?                @default(true)
+  creatorUserId         Int
+  creatorUser           Usuarios                @relation(fields: [creatorUserId], references: [id])
+  createdAt             DateTime?               @default(now())
+  updatedAt             DateTime?               @updatedAt
+  publicidadesProductos PublicidadesProductos[]
+}
+
+model PublicidadesProductos {
+  id            Int          @id @default(autoincrement())
+  comentarios   String?      @default("") @db.VarChar(150)
+  peso          Int?         @default(100)
+  destacado     Boolean?     @default(false)
+  tipo          String?      @default("Generico")
+  activo        Boolean?     @default(true)
+  productoId    Int
+  producto      Productos    @relation(fields: [productoId], references: [id])
+  imagenId      Int
+  imagen        Imagenes     @relation(fields: [imagenId], references: [id])
+  publicidadId  Int
+  publicidad    Publicidades @relation(fields: [publicidadId], references: [id])
+  creatorUserId Int
+  creatorUser   Usuarios     @relation(fields: [creatorUserId], references: [id])
+  createdAt     DateTime?    @default(now())
+  updatedAt     DateTime?    @updatedAt
+}

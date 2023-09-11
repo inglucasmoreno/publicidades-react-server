@@ -1,0 +1,140 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Imagenes, Prisma } from '@prisma/client';
+import { PrismaService } from 'src/prisma.service';
+import * as fs from 'fs';
+
+@Injectable()
+export class ImagenesService {
+
+  public urlImagenes = 'public/uploads/imagenes';
+
+  constructor(private prisma: PrismaService) { }
+
+  // Imagen por ID
+  async getId(id: number): Promise<Imagenes> {
+    const imagen = await this.prisma.imagenes.findFirst({ where: { id }, include: { creatorUser: true } })
+    if (!imagen) throw new NotFoundException('La imagen no existe');
+    return imagen;
+  }
+
+  // Listar imagenes
+  async getAll({
+    columna = 'descripcion',
+    direccion = 1,
+    activo = '',
+    parametro = '',
+    desde = 0,
+    cantidadItems = 100000
+  }: any): Promise<any> {
+
+    // // Ordenando datos
+    // let order = {};
+    // order[columna] = Number(direccion);
+
+    // // Filtrando datos
+    // let where = [];
+    // let campos = ['descripcion'];
+
+    // campos.forEach(campo => {
+    //   const filtro = {};
+    //   filtro[campo] = Like('%' + parametro.toUpperCase() + '%');
+    //   if (activo.trim() !== '') filtro['activo'] = activo === 'true' ? true : false;
+    //   where.push(filtro)
+    // })
+
+    // const totalItems = await this.imagenesRepository.count({ where });
+
+    const imagenes = await this.prisma.imagenes.findMany({
+      include: { creatorUser: true },
+      orderBy: { descripcion: 'asc' }
+    })
+
+    return {
+      imagenes,
+      totalItems: imagenes.length
+    };
+
+  }
+
+  // Crear imagen
+  async insert(createData: Prisma.ImagenesCreateInput, file: Express.Multer.File): Promise<Imagenes> {
+
+    createData.url = file.filename;
+
+    // Uppercase y Lowercase
+    createData.descripcion = createData.descripcion?.toLocaleUpperCase().trim();
+
+    const { descripcion } = createData;
+
+    // Verificacion: imagen repetida
+    if (descripcion !== '') {
+      
+      let imagenDB = await this.prisma.imagenes.findFirst({ where: { descripcion } });
+      
+      if (imagenDB) {
+        fs.unlink(`${this.urlImagenes}/${createData.url}`, (error) => {
+          if(error){
+            console.error('Error al eliminar el archivo:', error);
+          }else{
+            console.error('Archivo eliminado correctamente:', error);
+          }
+        })
+        throw new NotFoundException('La descripción ya fue cargada');
+      }
+    
+    }
+
+    return await this.prisma.imagenes.create({
+      data: createData
+    })
+
+  }
+
+  // Actualizar imagen
+  async update(id: number, updateData: Prisma.ImagenesUpdateInput): Promise<any> {
+
+    const { descripcion } = updateData;
+
+    const imagenDB = await this.prisma.imagenes.findFirst({ where: { id } });
+
+    // Verificacion: La imagen no existe
+    if (!imagenDB) throw new NotFoundException('La imagen no existe');
+
+    // Verificacion: Descripcion repetida
+    if (descripcion) {
+      const descripcionRepetida = await this.prisma.imagenes.findFirst({ where: { descripcion: descripcion.toString().toLocaleUpperCase().trim() } })
+      if (descripcionRepetida && descripcionRepetida.id !== id) throw new NotFoundException('La descripción ya se encuentra cargada');
+    }
+
+    updateData.descripcion = descripcion?.toString().toLocaleUpperCase().trim();
+
+    return await this.prisma.imagenes.update({ where: { id }, data: updateData, include: { creatorUser: true } });
+
+  }
+
+   // Eliminar imagen
+   async delete(id: number): Promise<any> {
+
+    // Verificacion: Existencia de imagen
+    const imagenDB: any = await this.prisma.imagenes.findFirst({ where: { id } });
+    if (!imagenDB) throw new NotFoundException('La imagen no existe');
+
+    // Verificacion: Relacion con publicacion
+    const publicacionesProductosDB = await this.prisma.publicidadesProductos.findFirst({where: { imagenId: id }, include: { publicidad: true }});
+    if(publicacionesProductosDB) throw new NotFoundException(`La imagen esta vinculada con una publicidad`);
+
+    fs.unlink(`${this.urlImagenes}/${imagenDB.url}`, async (error) => {
+      if(error){
+        console.error('Error al eliminar el archivo:', error);
+        throw new NotFoundException('Error al eliminar la imagen');
+      }else{
+        console.error('Archivo eliminado correctamente:', error);
+        await this.prisma.imagenes.delete({ where: { id } });
+      }
+    })
+
+    return 'Imagen eliminada correctamente';
+
+  }
+
+}

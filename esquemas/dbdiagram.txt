@@ -1,0 +1,152 @@
+Ref: clientes.id < obras_madera.id_cliente
+Ref: tipos_muebles.id < muebles.id_tipo_mueble 
+Ref: obras_madera.id < muebles.id_obra_madera
+Ref: muebles_placas.id_tipo_placa_madera > tipos_placas_madera.id
+Ref: muebles_placas.id_mueble > muebles.id
+Ref: obras_madera_pases.id_obra_madera > obras_madera.id
+Ref: obras_madera_pases.id_motivo_pase > obras_madera_motivo_pase.id
+Ref: ordenes_mantenimiento_madera.id_obra_madera > obras_madera.id
+Ref: usuarios_permisos.id_usuario > usuarios.id
+
+Table usuarios {
+  id integer [pk]
+  dni string
+  apellido string
+  nombre string
+  password string
+  email string
+  role string
+  activo boolean
+  createdAt timestamp
+  updatAtt timestamp
+}
+
+Table usuarios_permisos {
+  id integer [pk]
+  id_usuario integer
+  permiso string
+  activo boolean
+  creatorUser integer
+  updatorUser integer
+  createdAt timestamp
+  updatAtt timestamp
+}
+
+Table obras_madera {
+  id integer [pk]
+  codigo string
+  id_cliente integer
+  descripcion varchar
+  estado varchar
+  precio float
+  fecha_inicio date
+  fecha_finalizacion date
+  activo boolean
+  creatorUser integer
+  updatorUser integer
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table obras_madera_pases {
+  id integer [pk]
+  id_obra_madera integer
+  id_motivo_pase integer
+  tipo string [note: 'Adelante o Atras']
+  observacion string
+  etapa_anterior string
+  etapa_actual string
+  activo boolean
+  creatorUser integer
+  updatorUser integer
+  createAt timestamp
+  updateAt timestamp
+}
+
+Table obras_madera_motivo_pase {
+  id integer [pk]
+  descripcion string
+  activo boolean
+  creatorUser integer
+  updatorUser integer
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table clientes {
+  id integer [pk]
+  descripcion varchar [note: 'Nombre o Razon social']
+  tipo_identificacion varchar
+  identificacion varchar
+  telefono varchar
+  direccion varchar
+  activo boolean
+  creatorUser integer
+  updatorUser integer
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table muebles {
+  id integer [pk]
+  id_obra_madera integer
+  id_tipo_mueble integer
+  observaciones varchar
+  precio float
+  estado varchar
+  activo boolean
+  creatorUser integer
+  updatorUser integer
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table tipos_muebles {
+  id integer [pk]
+  descripcion varchar
+  placas boolean
+  activo boolean
+  creatorUser integer
+  updatorUser integer
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table tipos_placas_madera {
+  id integer [pk]
+  codigo varchar
+  descripcion varchar
+  activo boolean
+  creatorUser integer
+  updatorUser integer
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table muebles_placas {
+  id integer [pk]
+  id_mueble integer
+  id_tipo_placa_madera integer
+  cantidad integer
+  activo boolean
+  creatorUser integer
+  updatorUser integer
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table ordenes_mantenimiento_madera {
+  id integer [pk]
+  fecha date
+  id_obra_madera integer
+  observaciones string
+  precio integer
+  activo boolean
+  creatorUser integer
+  updatorUser integer
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+
+

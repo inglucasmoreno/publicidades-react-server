@@ -1,0 +1,39 @@
+version: "3.7"
+services:
+  app:
+    container_name: publicidades
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      PORT: 3000
+      NODE_ENV: develop
+      DATABASE_URL: mysql://root:root@mysql:3306/equinoccio-publicidades?schema=public
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:latest
+    container_name: database-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: equinoccio-publicidades
+      MYSQL_USER: equinoccio
+      MYSQL_PASSWORD: 123456
+    volumes:
+      - .mysql_data:/var/lib/mysql:rw
+    ports:
+      - 3310:3306
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - 8081:80
+    depends_on:
+      - mysql

@@ -12,7 +12,7 @@ export class CartaController {
       'file',
       {
         storage: diskStorage({
-          destination: './public/pdf/',
+          destination: process.env.URL_PDF,
           filename: function (req, file, cb) {
             const stringSplit = file.mimetype.split('/');
             const ext = stringSplit[stringSplit.length - 1];

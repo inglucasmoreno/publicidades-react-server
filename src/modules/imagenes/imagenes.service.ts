@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Imagenes, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import * as fs from 'fs';
+import sharp from 'sharp';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class ImagenesService {
@@ -59,29 +61,44 @@ export class ImagenesService {
   // Crear imagen
   async insert(createData: Prisma.ImagenesCreateInput, file: Express.Multer.File): Promise<Imagenes> {
 
-    createData.url = file.filename;
-
     // Uppercase y Lowercase
     createData.descripcion = createData.descripcion?.toLocaleUpperCase().trim();
 
     const { descripcion } = createData;
-
-    // Verificacion: imagen repetida
-    if (descripcion !== '') {
-      
-      let imagenDB = await this.prisma.imagenes.findFirst({ where: { descripcion } });
-      
-      if (imagenDB) {
-        fs.unlink(`${this.urlImagenes}/${createData.url}`, (error) => {
-          if(error){
-            console.error('Error al eliminar el archivo:', error);
-          }else{
-            console.error('Archivo eliminado correctamente:', error);
-          }
-        })
-        throw new NotFoundException('La descripción ya fue cargada');
-      }
     
+    // Verificacion: Envio de descripcion
+    if (descripcion === '') throw new NotFoundException('Se debe enviar una descripcion');
+
+    // Verificacion: Imagen repetida
+    let imagenDB = await this.prisma.imagenes.findFirst({ where: { descripcion } });
+    if (imagenDB) throw new NotFoundException('La imagen ya se encuentra cargada');
+
+    // if (imagenDB) {
+    //   fs.unlink(`${this.urlImagenes}/${createData.url}`, (error) => {
+    //     if(error){
+    //       console.error('Error al eliminar el archivo:', error);
+    //     }else{
+    //       console.error('Archivo eliminado correctamente:', error);
+    //     }
+    //   })
+    //   throw new NotFoundException('La descripción ya fue cargada');
+    // }
+
+    try{
+    
+      // Nombre de archivo
+      const filename = `${uuid()}.webp`;
+      createData.url = filename;
+  
+      // Realiza la conversión a WebP utilizando sharp
+      const outputBuffer = await sharp(file.buffer).webp().toBuffer();
+      
+      // Guarda la imagen WebP en el sistema de archivos
+      const outputPath = `${process.env.URL_IMAGE}${filename}`;
+      fs.writeFileSync(outputPath, outputBuffer);
+    
+    }catch(error){
+      throw new NotFoundException(error);
     }
 
     return await this.prisma.imagenes.create({
@@ -112,22 +129,22 @@ export class ImagenesService {
 
   }
 
-   // Eliminar imagen
-   async delete(id: number): Promise<any> {
+  // Eliminar imagen
+  async delete(id: number): Promise<any> {
 
     // Verificacion: Existencia de imagen
     const imagenDB: any = await this.prisma.imagenes.findFirst({ where: { id } });
     if (!imagenDB) throw new NotFoundException('La imagen no existe');
 
     // Verificacion: Relacion con publicacion
-    const publicacionesProductosDB = await this.prisma.publicidadesProductos.findFirst({where: { imagenId: id }, include: { publicidad: true }});
-    if(publicacionesProductosDB) throw new NotFoundException(`La imagen esta vinculada con una publicidad`);
+    const publicacionesProductosDB = await this.prisma.publicidadesProductos.findFirst({ where: { imagenId: id }, include: { publicidad: true } });
+    if (publicacionesProductosDB) throw new NotFoundException(`La imagen esta vinculada con una publicidad`);
 
     fs.unlink(`${this.urlImagenes}/${imagenDB.url}`, async (error) => {
-      if(error){
+      if (error) {
         console.error('Error al eliminar el archivo:', error);
         throw new NotFoundException('Error al eliminar la imagen');
-      }else{
+      } else {
         console.error('Archivo eliminado correctamente:', error);
         await this.prisma.imagenes.delete({ where: { id } });
       }

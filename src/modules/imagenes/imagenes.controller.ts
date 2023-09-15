@@ -41,16 +41,16 @@ export class ImagenesController {
   @UseInterceptors(
     FileInterceptor(
       'file',
-      {
-        storage: diskStorage({
-          destination: './public/uploads/imagenes',
-          filename: function (req, file, cb) {
-            const stringSplit = file.mimetype.split('/');
-            const ext = stringSplit[stringSplit.length - 1];
-            cb(null, uuid() + '.' + ext);
-          }
-        })
-      }
+      // {
+      //   storage: diskStorage({
+      //     destination: './public/uploads/imagenes',
+      //     filename: function (req, file, cb) {
+      //       const stringSplit = file.mimetype.split('/');
+      //       const ext = stringSplit[stringSplit.length - 1];
+      //       cb(null, uuid() + '.' + ext);
+      //     }
+      //   })
+      // }
     )
   )
   @Post('/')

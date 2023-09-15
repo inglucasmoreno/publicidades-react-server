@@ -22,7 +22,7 @@ export class PublicidadesProductosController {
 
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('/')
   async getAllRelaciones(@Res() res, @Query() query): Promise<any> {
     const { relaciones, totalItems } = await this.relacionesService.getAll(query);

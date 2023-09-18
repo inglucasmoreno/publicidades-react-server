@@ -97,6 +97,8 @@ model PublicidadesProductos {
   comentarios   String?      @default("") @db.VarChar(150)
   peso          Int?         @default(100)
   destacado     Boolean?     @default(false)
+  sinFondo      Boolean?     @default(false)
+  frase         String?      @default("")
   tipo          String?      @default("Generico")
   activo        Boolean?     @default(true)
   productoId    Int

@@ -140,7 +140,7 @@ export class ImagenesService {
     const publicacionesProductosDB = await this.prisma.publicidadesProductos.findFirst({ where: { imagenId: id }, include: { publicidad: true } });
     if (publicacionesProductosDB) throw new NotFoundException(`La imagen esta vinculada con una publicidad`);
 
-    fs.unlink(`${this.urlImagenes}/${imagenDB.url}`, async (error) => {
+    fs.unlink(`${process.env.URL_IMAGE}${imagenDB.url}`, async (error) => {
       if (error) {
         console.error('Error al eliminar el archivo:', error);
         throw new NotFoundException('Error al eliminar la imagen');

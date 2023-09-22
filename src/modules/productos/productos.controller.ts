@@ -25,6 +25,7 @@ export class ProductosController {
   @UseGuards(JwtAuthGuard)
   @Get('/')
   async getAllProductos(@Res() res, @Query() query): Promise<any> {
+    console.log(query);
     const { productos, totalItems } = await this.productosService.getAll(query);
     return res.status(HttpStatus.OK).json({
       success: true,
@@ -42,8 +43,6 @@ export class ProductosController {
     @Body() createData: Prisma.ProductosCreateInput,
     @Headers('userLogin') userLogin: any
   ): Promise<any> {
-
-    console.log(createData);
 
     const data = {
       ...createData,

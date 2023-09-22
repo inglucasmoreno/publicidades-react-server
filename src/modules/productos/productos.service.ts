@@ -27,7 +27,7 @@ export class ProductosService {
   async getAll({
     columna = 'descripcion',
     direccion = 1,
-    activo = '',
+    activo,
     parametro = '',
     desde = 0,
     cantidadItems = 100000
@@ -50,12 +50,17 @@ export class ProductosService {
 
     // const totalItems = await this.productosRepository.count({where});
 
+    let where = {};
+
+    if(activo) where = { activo: activo === 'true' ? true : false };
+    
     const productos = await this.prisma.productos.findMany({
       include: {
         unidadMedida: true,
         creatorUser: true,
       },
-      orderBy: { descripcion: 'asc' }
+      orderBy: { descripcion: 'asc' },
+      where
     })
 
     return {

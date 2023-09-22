@@ -23,7 +23,7 @@ export class ImagenesService {
   async getAll({
     columna = 'descripcion',
     direccion = 1,
-    activo = '',
+    activo,
     parametro = '',
     desde = 0,
     cantidadItems = 100000
@@ -44,11 +44,15 @@ export class ImagenesService {
     //   where.push(filtro)
     // })
 
+    let where = {};
+    if(activo) where = { activo: activo === 'true' ? true : false };
+
     // const totalItems = await this.imagenesRepository.count({ where });
 
     const imagenes = await this.prisma.imagenes.findMany({
       include: { creatorUser: true },
-      orderBy: { descripcion: 'asc' }
+      orderBy: { descripcion: 'asc' },
+      where
     })
 
     return {

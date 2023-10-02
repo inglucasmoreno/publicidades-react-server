@@ -82,7 +82,8 @@ export class PublicidadesProductosService {
 
   // Crear relacion
   async insert(createData: Prisma.PublicidadesProductosCreateInput): Promise<PublicidadesProductos> {
-    createData.comentarios = createData.comentarios?.toUpperCase();
+    createData.comentarios = createData.comentarios?.toUpperCase().trim();
+    createData.frase = createData.frase?.toUpperCase().trim();
     return await this.prisma.publicidadesProductos.create({
       data: createData,
       include: includeRelaciones
@@ -109,6 +110,7 @@ export class PublicidadesProductosService {
   async update(id: number, updateData: Prisma.PublicidadesProductosUpdateInput): Promise<any> {
 
     updateData.comentarios = updateData.comentarios?.toString().toUpperCase().trim();
+    updateData.frase = updateData.frase?.toString().toUpperCase().trim();
 
     const relacionDB = await this.prisma.publicidadesProductos.findFirst({
       where: { id }

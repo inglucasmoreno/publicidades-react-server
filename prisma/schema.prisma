@@ -95,11 +95,10 @@ model Publicidades {
 model PublicidadesProductos {
   id            Int          @id @default(autoincrement())
   comentarios   String?      @default("")
+  frase         String?      @default("")
   peso          Int?         @default(100)
   destacado     Boolean?     @default(false)
-  sinFondo      Boolean?     @default(false)
-  frase         String?      @default("")
-  tipo          String?      @default("Generico")
+  descuento     Int?         @default(0)
   activo        Boolean?     @default(true)
   productoId    Int
   producto      Productos    @relation(fields: [productoId], references: [id])

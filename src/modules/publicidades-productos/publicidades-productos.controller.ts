@@ -85,8 +85,6 @@ export class PublicidadesProductosController {
   @Patch('/:id')
   async updateData(@Res() res, @Param('id') id: number, @Body() updateData: Prisma.PublicidadesProductosCreateInput): Promise<any> {
 
-    console.log(updateData);
-
     const relacion = await this.relacionesService.update(id, updateData);
 
     res.status(HttpStatus.OK).json({

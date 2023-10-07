@@ -83,6 +83,7 @@ model Imagenes {
 model Publicidades {
   id                    Int                     @id @default(autoincrement())
   descripcion           String                  @unique @db.VarChar(100)
+  cantidad_muestra      Int?                    @default(10)
   tema                  String?                 @default("Basico") @db.VarChar(100)
   activo                Boolean?                @default(true)
   creatorUserId         Int

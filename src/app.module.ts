@@ -15,6 +15,10 @@ import { ImagenesModule } from './modules/imagenes/imagenes.module';
 import { PublicidadesModule } from './modules/publicidades/publicidades.module';
 import { PublicidadesProductosModule } from './modules/publicidades-productos/publicidades-productos.module';
 import { CartaModule } from './modules/carta/carta.module';
+import { CartasDigitalesModule } from './modules/cartas-digitales/cartas-digitales.module';
+import { CartasSeccionesModule } from './modules/cartas-secciones/cartas-secciones.module';
+import { SeccionesSubseccionesModule } from './modules/secciones-subsecciones/secciones-subsecciones.module';
+import { SubseccionesProductosModule } from './modules/subsecciones-productos/subsecciones-productos.module';
 
 @Module({
   imports: [
@@ -48,6 +52,10 @@ import { CartaModule } from './modules/carta/carta.module';
     PublicidadesModule,
     PublicidadesProductosModule,
     CartaModule,
+    CartasDigitalesModule,
+    CartasSeccionesModule,
+    SeccionesSubseccionesModule,
+    SubseccionesProductosModule,
 
   ],
   controllers: [AppController],

@@ -30,6 +30,10 @@ model Usuarios {
   imagenes              Imagenes[]
   publicidades          Publicidades[]
   publicidadesProductos PublicidadesProductos[]
+  CartasDigitales       CartasDigitales[]
+  CartasSecciones       CartasSecciones[]
+  SeccionesSubsecciones SeccionesSubsecciones[]
+  SubseccionesProductos SubseccionesProductos[]
 }
 
 model UsuariosPermisos {
@@ -66,6 +70,7 @@ model Productos {
   createdAt             DateTime?               @default(now())
   updatedAt             DateTime?               @updatedAt
   publicidadesProductos PublicidadesProductos[]
+  SubseccionesProductos SubseccionesProductos[]
 }
 
 model Imagenes {
@@ -111,4 +116,55 @@ model PublicidadesProductos {
   creatorUser   Usuarios     @relation(fields: [creatorUserId], references: [id])
   createdAt     DateTime?    @default(now())
   updatedAt     DateTime?    @updatedAt
+}
+
+model CartasDigitales {
+  id              Int               @id @default(autoincrement())
+  tema            String            @unique @db.VarChar(50)
+  descripcion     String            @unique @db.VarChar(150)
+  activo          Boolean?          @default(true)
+  creatorUserId   Int
+  creatorUser     Usuarios          @relation(fields: [creatorUserId], references: [id])
+  createdAt       DateTime?         @default(now())
+  updatedAt       DateTime?         @updatedAt
+  CartasSecciones CartasSecciones[]
+}
+
+model CartasSecciones {
+  id                    Int                     @id @default(autoincrement())
+  cartaDigitalId        Int
+  cartaDigital          CartasDigitales         @relation(fields: [cartaDigitalId], references: [id])
+  descripcion           String                  @unique @db.VarChar(150)
+  activo                Boolean?                @default(true)
+  creatorUserId         Int
+  creatorUser           Usuarios                @relation(fields: [creatorUserId], references: [id])
+  createdAt             DateTime?               @default(now())
+  updatedAt             DateTime?               @updatedAt
+  SeccionesSubsecciones SeccionesSubsecciones[]
+}
+
+model SeccionesSubsecciones {
+  id                    Int                     @id @default(autoincrement())
+  seccionId             Int
+  seccion               CartasSecciones         @relation(fields: [seccionId], references: [id])
+  descripcion           String                  @unique @db.VarChar(150)
+  activo                Boolean?                @default(true)
+  creatorUserId         Int
+  creatorUser           Usuarios                @relation(fields: [creatorUserId], references: [id])
+  createdAt             DateTime?               @default(now())
+  updatedAt             DateTime?               @updatedAt
+  SubseccionesProductos SubseccionesProductos[]
+}
+
+model SubseccionesProductos {
+  id            Int                   @id @default(autoincrement())
+  subseccionId  Int
+  subseccion    SeccionesSubsecciones @relation(fields: [subseccionId], references: [id])
+  productoId    Int
+  producto      Productos             @relation(fields: [productoId], references: [id])
+  activo        Boolean?              @default(true)
+  creatorUserId Int
+  creatorUser   Usuarios              @relation(fields: [creatorUserId], references: [id])
+  createdAt     DateTime?             @default(now())
+  updatedAt     DateTime?             @updatedAt
 }

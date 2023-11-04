@@ -3,9 +3,9 @@
     "version": "2.2.11",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -293,
-    "scrollLeft": -429,
-    "zoomLevel": 0.7,
+    "scrollTop": -54,
+    "scrollLeft": -553,
+    "zoomLevel": 0.9,
     "show": {
       "tableComment": true,
       "columnComment": true,
@@ -45,7 +45,7 @@
   "table": {
     "tables": [
       {
-        "name": "unidades_medida",
+        "name": "unidadesMedida",
         "comment": "",
         "columns": [
           {
@@ -122,8 +122,8 @@
           "active": false,
           "left": 101.3795,
           "top": 192.7006,
-          "zIndex": 254,
-          "widthName": 104.63525390625,
+          "zIndex": 39,
+          "widthName": 97.4052734375,
           "widthComment": 60,
           "color": "#F10000"
         },
@@ -254,7 +254,7 @@
           "active": false,
           "left": 560.9209,
           "top": 189.4846,
-          "zIndex": 435,
+          "zIndex": 7,
           "widthName": 60,
           "widthComment": 60,
           "color": "#00FF2F"
@@ -363,7 +363,7 @@
           "active": false,
           "left": 114.8178,
           "top": 476.4757,
-          "zIndex": 248,
+          "zIndex": 1,
           "widthName": 80.7744140625,
           "widthComment": 82.9326171875,
           "color": "#FFEC00"
@@ -472,7 +472,7 @@
           "active": false,
           "left": 1026.7612,
           "top": 607.5858,
-          "zIndex": 286,
+          "zIndex": 34,
           "widthName": 60,
           "widthComment": 60,
           "color": "#FFEC00"
@@ -481,7 +481,7 @@
         "id": "625956a2-a6b7-4fab-ba5e-d554422a99d1"
       },
       {
-        "name": "publicaciones_productos",
+        "name": "publicacionesProductos",
         "comment": "",
         "columns": [
           {
@@ -627,8 +627,8 @@
           "active": false,
           "left": 569.2063,
           "top": 477.5037,
-          "zIndex": 274,
-          "widthName": 145.09521484375,
+          "zIndex": 36,
+          "widthName": 139.30615234375,
           "widthComment": 60,
           "color": "#FFEC00"
         },
@@ -851,7 +851,7 @@
           "active": false,
           "left": 113.0554,
           "top": 716.7778,
-          "zIndex": 264,
+          "zIndex": 3,
           "widthName": 60,
           "widthComment": 60,
           "color": "#FF9700"
@@ -960,7 +960,7 @@
           "active": false,
           "left": 573.2223,
           "top": 715.2785,
-          "zIndex": 266,
+          "zIndex": 4,
           "widthName": 60,
           "widthComment": 60,
           "color": "#FF9700"
@@ -969,7 +969,7 @@
         "id": "1925a881-fb36-407f-8113-37333c19a267"
       },
       {
-        "name": "cartas",
+        "name": "cartasDigitales",
         "comment": "",
         "columns": [
           {
@@ -1069,8 +1069,8 @@
           "active": false,
           "left": 1029.3612,
           "top": 61.8062,
-          "zIndex": 533,
-          "widthName": 60,
+          "zIndex": 24,
+          "widthName": 87.25537109375,
           "widthComment": 60,
           "color": "#004CFF"
         },
@@ -1078,7 +1078,7 @@
         "id": "d5deaf2b-1f72-48d1-a172-7c1c3b49096b"
       },
       {
-        "name": "subsecciones_productos",
+        "name": "subseccionesProductos",
         "comment": "",
         "columns": [
           {
@@ -1178,8 +1178,8 @@
           "active": false,
           "left": 1511.25,
           "top": 565,
-          "zIndex": 526,
-          "widthName": 145.0888671875,
+          "zIndex": 32,
+          "widthName": 139.2998046875,
           "widthComment": 60,
           "color": "#004CFF"
         },
@@ -1187,7 +1187,7 @@
         "id": "534ea4e3-b13a-488f-adb3-d46a20ddb41f"
       },
       {
-        "name": "cartas_secciones",
+        "name": "cartasSecciones",
         "comment": "",
         "columns": [
           {
@@ -1287,8 +1287,8 @@
           "active": false,
           "left": 1510.1667,
           "top": 61.0833,
-          "zIndex": 499,
-          "widthName": 102.43896484375,
+          "zIndex": 27,
+          "widthName": 97.3798828125,
           "widthComment": 60,
           "color": "#004CFF"
         },
@@ -1296,7 +1296,7 @@
         "id": "9338ccf4-bd1f-4d2a-a743-a314fcbb1c76"
       },
       {
-        "name": "secciones_subsecciones",
+        "name": "seccionesSubsecciones",
         "comment": "",
         "columns": [
           {
@@ -1396,8 +1396,8 @@
           "active": false,
           "left": 1510.5,
           "top": 310.5,
-          "zIndex": 519,
-          "widthName": 145.80615234375,
+          "zIndex": 30,
+          "widthName": 140.7470703125,
           "widthComment": 60,
           "color": "#004CFF"
         },

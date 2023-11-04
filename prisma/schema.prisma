@@ -120,7 +120,7 @@ model PublicidadesProductos {
 
 model CartasDigitales {
   id              Int               @id @default(autoincrement())
-  tema            String            @unique @db.VarChar(50)
+  tema            String            @db.VarChar(50)
   descripcion     String            @unique @db.VarChar(150)
   activo          Boolean?          @default(true)
   creatorUserId   Int

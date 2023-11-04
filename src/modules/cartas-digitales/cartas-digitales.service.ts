@@ -74,10 +74,10 @@ export class CartasDigitalesService {
     const { descripcion } = createData;
 
     // Verificacion: carta digital repetida
-    if (descripcion !== '') {
-      let cartaDigitalDB = await this.prisma.cartasDigitales.findFirst({ where: { descripcion } });
-      if (cartaDigitalDB) throw new NotFoundException('La carta digital ya fue cargada');
-    }
+    // if (descripcion !== '') {
+    //   let cartaDigitalDB = await this.prisma.cartasDigitales.findFirst({ where: { descripcion } });
+    //   if (cartaDigitalDB) throw new NotFoundException('La carta digital ya fue cargada');
+    // }
 
     return await this.prisma.cartasDigitales.create({ data: createData })
 
